@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import ListItem from './ListItem';
 
@@ -27,9 +27,8 @@ export default function List({ itemsCount }: IList) {
     <>
       {/* <button>Delete first</button> */}
       <ul>
-        {/* <ListItem key={index.toString()} index={index} item={item} onUpdate={handleUpdate} /> */}
         {items.map((item, index) => (
-          <ListItem key={item.value} index={index} item={item} onUpdate={handleUpdate} />
+          <ListItem key={item.id.toString()} index={index} item={item} onUpdate={handleUpdate} />
         ))}
       </ul>
     </>
