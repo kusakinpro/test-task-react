@@ -2,26 +2,34 @@ import { useState } from 'react';
 
 import ListItem from './ListItem';
 
-export default function List({ itemsCount }) {
+interface IList {
+  itemsCount: number;
+}
+
+export default function List({ itemsCount }: IList) {
   const initialState = Array.from({ length: itemsCount }).map((_, id) => ({
     id,
-    label: 'Item #${id + 1}',
+    label: `Item #${id + 1}`,
     value: Math.random(),
   }));
 
   const [items, setItems] = useState(initialState);
 
-  const handleUpdate = (index) => {
-    items[index].value = Math.random();
-    setItems(items);
+  const handleUpdate = (index: number) => {
+    setItems((prevItems) => {
+      const newItems = [...prevItems];
+      newItems[index] = { ...newItems[index], value: Math.random() };
+      return newItems;
+    });
   };
 
   return (
     <>
       {/* <button>Delete first</button> */}
       <ul>
+        {/* <ListItem key={index.toString()} index={index} item={item} onUpdate={handleUpdate} /> */}
         {items.map((item, index) => (
-          <ListItem index={index} item={item} onUpdate={handleUpdate} />
+          <ListItem key={item.value} index={index} item={item} onUpdate={handleUpdate} />
         ))}
       </ul>
     </>

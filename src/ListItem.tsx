@@ -1,20 +1,38 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-export default function ListItem({ index, item, onUpdate }) {
-  const [renderCount, setRenderCount] = useState(0);
-
-  useEffect(() => {
-    setRenderCount(renderCount + 1);
-  }, [item]);
-
-  const handleClick = () => {
-    onUpdate(index);
+interface IListItem {
+  index: number;
+  item: {
+    id: number;
+    label: string;
+    value: number;
   };
-
-  return (
-    <li>
-      {item.label}: {item.value} (renders: {renderCount})
-      <button onClick={handleClick}>Update</button>
-    </li>
-  );
+  onUpdate: (index: number) => void;
 }
+
+const ListItem: React.FC<IListItem> = React.memo(
+  ({ index, item, onUpdate }) => {
+    console.log(`render ${index}`);
+    const [renderCount, setRenderCount] = useState(0);
+
+    useEffect(() => {
+      setRenderCount((prevRenderCount) => prevRenderCount + 1);
+    }, [item]);
+
+    return (
+      <li>
+        {item.label}: {item.value} (renders: {renderCount})
+        <button onClick={() => onUpdate(index)}>Update</button>
+      </li>
+    );
+  },
+  (prevProps, nextProps) => {
+    if (nextProps.item.value !== prevProps.item.value) {
+      return false;
+    } else {
+      return true;
+    }
+  },
+);
+
+export default ListItem;
