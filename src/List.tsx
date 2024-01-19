@@ -30,17 +30,24 @@ export default function List({ itemsCount }: IList) {
     чтобы избежать создания новой функции при каждом рендере
   */
   const handleUpdate = useCallback(
-    (index: number) => {
+    (id: number) => {
       setItems((prevItems) =>
-        prevItems.map((item, i) => (i === index ? { ...item, value: Math.random() } : item)),
+        prevItems.map((item) => (item.id === id ? { ...item, value: Math.random() } : item)),
       );
+    },
+    [itemsCount],
+  );
+
+  const handleDelete = useCallback(
+    (index: number) => {
+      setItems((prevItems) => prevItems.filter((_, i) => i !== index));
     },
     [itemsCount],
   );
 
   return (
     <>
-      {/* <button>Delete first</button> */}
+      <button onClick={() => handleDelete(0)}>Delete first</button>
       <ul>
         {items.map((item, index) => (
           <ListItem key={item.id} index={index} item={item} onUpdate={handleUpdate} />
