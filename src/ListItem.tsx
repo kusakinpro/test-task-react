@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useRef, memo } from 'react';
 
 interface IListItem {
   index: number;
@@ -10,25 +10,15 @@ interface IListItem {
   onUpdate: (index: number) => void;
 }
 
-const ListItem: React.FC<IListItem> = React.memo(
-  ({ index, item, onUpdate }) => {
-    // console.log(`render ${index}`);
-    const renderCount = useRef(1);
+export default memo(function ListItem({ index, item, onUpdate }: IListItem) {
+  console.log(`render IListItem ${index}`);
+  const renderCount = useRef(0);
+  renderCount.current++;
 
-    useEffect(() => {
-      renderCount.current++;
-    });
-
-    return (
-      <li>
-        {item.label}: {item.value} (renders: {renderCount.current})
-        <button onClick={() => onUpdate(index)}>Update</button>
-      </li>
-    );
-  },
-  (prevProps, nextProps) => {
-    return nextProps.item.value === prevProps.item.value;
-  },
-);
-
-export default ListItem;
+  return (
+    <li>
+      {item.label}: {item.value} (renders: {renderCount.current})
+      <button onClick={() => onUpdate(index)}>Update</button>
+    </li>
+  );
+});
