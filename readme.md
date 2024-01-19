@@ -17,3 +17,7 @@ The "Update" buttons now work correctly, but updating only one row causes all 20
 2.2) Optimize the rerendering so that when clicking "Update" on an item, only the component where the button is pressed undergoes an update.
 
 2.3) Try to eliminate double renders of rows.
+
+## Third task
+
+In the List component, there is a commented-out button "Delete first," which also does not work. Implement the removal of the first element from the items.
